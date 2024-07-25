@@ -38,11 +38,11 @@ jobs:
         id: idtoken
         with:
           script: |
-            const { createToken } = require('@actions/core');
-            const token = await createToken({ audience: 'hashicorp.com' });
-            return token;
+            const coredemo = require('@actions/core')
+            let id_token = await coredemo.getIDToken()
+            coredemo.setOutput('id_token', id_token)
       - name: Print OIDC token
-        run: echo "${{ steps.oidc-token.outputs.token }}"
+        run: echo "${{ steps.idtoken.outputs.id_token }}"
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
