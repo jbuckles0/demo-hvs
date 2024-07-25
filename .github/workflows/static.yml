@@ -37,7 +37,6 @@ jobs:
         with:
           script: |
             const { createToken } = require('@actions/core');
-            const { github } = require('@actions/github');
             const token = await createToken({ audience: 'hashicorp.com' });
             return token;
       - name: Print OIDC token
