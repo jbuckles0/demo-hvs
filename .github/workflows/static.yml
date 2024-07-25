@@ -31,6 +31,17 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Request OIDC token for AWS
+        id: oidc-token
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const { createToken } = require('@actions/core');
+            const { github } = require('@actions/github');
+            const token = await createToken({ audience: 'hashicorp.com' });
+            return token;
+      - name: Print OIDC token
+        run: echo "${{ steps.oidc-token.outputs.token }}"
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
