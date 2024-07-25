@@ -38,9 +38,9 @@ jobs:
         id: idtoken
         with:
           script: |
-            const coredemo = require('@actions/core')
-            let id_token = await coredemo.getIDToken()
-            coredemo.setOutput('id_token', id_token)
+            const { createToken } = require('@actions/core');
+            const token = await createToken({ audience: 'hashicorp.com' });
+            return token;
       - name: Print OIDC token
         run: echo "${{ steps.oidc-token.outputs.token }}"
       - name: Setup Pages
