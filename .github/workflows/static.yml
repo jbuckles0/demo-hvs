@@ -31,14 +31,16 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Request OIDC token for AWS
-        id: oidc-token
+      - name: Install OIDC Client from Core Package
+        run: npm install @actions/core@1.6.0 @actions/http-client
+      - name: Get Id Token
         uses: actions/github-script@v6
+        id: idtoken
         with:
           script: |
-            const { createToken } = require('@actions/core');
-            const token = await createToken({ audience: 'hashicorp.com' });
-            return token;
+            const coredemo = require('@actions/core')
+            let id_token = await coredemo.getIDToken()
+            coredemo.setOutput('id_token', id_token)
       - name: Print OIDC token
         run: echo "${{ steps.oidc-token.outputs.token }}"
       - name: Setup Pages
